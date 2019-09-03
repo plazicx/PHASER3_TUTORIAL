@@ -16,5 +16,11 @@ let game = new Phaser.Game({
     ],
     render:{
         pixelArt:true
+    },
+    physics: {
+        default: "arcade",
+        arcade: {
+            debug: true //to draw rectangles around sprites!
+        }
     }
 });
