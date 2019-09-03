@@ -60,7 +60,7 @@ export class PlayScene extends Phaser.Scene{
         });
 
         this.anims.create({
-            key: "up",
+            key: "down",
             frameRate: 10,
             frames: this.anims.generateFrameNumbers("anna", {
                 //frames: [10, 11, 12, 13, 14, 15, 16, 17, 18]
@@ -70,7 +70,7 @@ export class PlayScene extends Phaser.Scene{
         });
 
         this.anims.create({
-            key: "down",
+            key: "up",
             frameRate: 10,
             frames: this.anims.generateFrameNumbers("anna", {
                 //frames: [10, 11, 12, 13, 14, 15, 16, 17, 18]
@@ -162,7 +162,9 @@ export class PlayScene extends Phaser.Scene{
         })
         */
 
-
+        //set smaller hitbox
+        this.anna.setSize(40,50).setOffset(10,10);
+        this.anna.setCollideWorldBounds(true);
 
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
 
@@ -232,15 +234,15 @@ export class PlayScene extends Phaser.Scene{
 
                     //this.anna.x = this.anna.x + 64 * (delta/1000.);
                     // after adding physics we can use velocity
-                    this.anna.setVelocityX(64);
+                    this.anna.setVelocityX(128);
                     this.anna.play("right", true);
                 }
             
                 if(this.keyboard.A.isDown === true){
-                    console.log("A pressed", this.anna.x);
+                    //console.log("A pressed", this.anna.x);
                     //this.anna.x = this.anna.x - 64 * (delta/1000.);
-                    this.anna.setVelocityX(-64);
-                    this.anna.anims.playReverse("left", true);
+                    this.anna.setVelocityX(-128);
+                    //this.anna.anims.playReverse("left", true);
                 }
 
                 if(this.keyboard.A.isUp && this.keyboard.D.isUp){ //not moving on the X axis
@@ -250,18 +252,33 @@ export class PlayScene extends Phaser.Scene{
 
 
                 if(this.keyboard.W.isDown === true){
-                    this.anna.setVelocityY(-64);
-                    this.anna.play("down", true);
+                    this.anna.setVelocityY(-128);
+                    //this.anna.play("down", true);
                 }
             
                 if(this.keyboard.S.isDown === true){
-                    this.anna.setVelocityY(64);
-                    this.anna.anims.playReverse("up", true);
+                    this.anna.setVelocityY(128);
+                    //this.anna.anims.play("up", true);
                 }
 
                 if(this.keyboard.S.isUp && this.keyboard.W.isUp){ //not moving on the X axis
                     this.anna.setVelocityY(0);
                 }
+
+                if(this.anna.body.velocity.x > 0) { //moving right
+                    this.anna.play("right",true);    
+                }
+                if(this.anna.body.velocity.x < 0) { //moving left
+                    this.anna.anims.playReverse("left",true);    
+                }
+                if(this.anna.body.velocity.y < 0) { //moving up
+                    this.anna.play("up",true);    
+                }
+                if(this.anna.body.velocity.y > 0) { //moving down
+                    this.anna.play("down",true);    
+                }
+
+
             }        
 
     }
