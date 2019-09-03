@@ -87,7 +87,7 @@ export class MenuScene extends Phaser.Scene{
         playButton.on("pointerup", ()=>{
             console.log("open the gates!")  
             // scene.start -> closes this scene (menu) and goes to game scene
-            this.scene.start(); 
+            this.scene.start(CST.SCENES.PLAY); 
         })
 
 
