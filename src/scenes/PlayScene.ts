@@ -1,4 +1,6 @@
 import {CST} from "../CST";
+import { Sprite } from "../Sprite";
+import { CharacterSprite } from "./CharacterSprite";
 export class PlayScene extends Phaser.Scene{
     // these are declarations as far as I understnad in order to get better suggestions
     // from the TypeScript
@@ -121,9 +123,27 @@ export class PlayScene extends Phaser.Scene{
         
        */
        // now we have this.anna and this.hooded - previously with let anna - later this.anna.x did not work!
+      
+       // if you uncomment this then the execution will stop here
+       //debugger;
        
+       
+       
+       // this cat is from phaser factory function
+       //let cat = this.add.sprite(100, 100, CST.SPRITE.CAT).setScale(2);
+       //  $%$
+       // this is with our own sprite class - our class will need a new keyword
+       // in Sprite(this....) below - this stands for the current scene object!
+       // make sure that we have imported our new Sprite class (begin of this file)
+       let cat = new Sprite(this, 100, 100, CST.SPRITE.CAT);
+
+
+
        //this.anna = this.add.sprite(400, 400, "anna").setScale(2);
-       this.anna = this.physics.add.sprite(400, 400, "anna").setScale(2);
+       //this.anna = this.physics.add.sprite(400, 400, "anna").setScale(2);
+        // replacing it with a custom class we created
+        this.anna = new CharacterSprite(this, 400, 400, "anna", 26);
+
        //this.hooded = this.add.sprite(200, 200, "hooded").setScale(2).play("right_hooded");
        //this.hooded = this.add.sprite(200, 200, "hooded").setScale(2);
        this.hooded = this.physics.add.sprite(200, 200, "hooded").setScale(2).setImmovable(true); //this is only movement due to collision!
@@ -180,10 +200,14 @@ export class PlayScene extends Phaser.Scene{
 
         //this.physics.world.addCollider(this.anna,this.hooded, (anna:Phaser.Physics.Arcade.Sprite, hooded:Phaser.Physics.Arcade.Sprite)=>{
        
-        this.physics.world.addCollider(this.anna, this.assassins, (anna:Phaser.Physics.Arcade.Sprite, assassins:Phaser.Physics.Arcade.Sprite)=>{
-            anna.destroy();
-            assassins.destroy();
-        });
+        //this.physics.world.addCollider(this.anna, this.assassins, (anna:Phaser.Physics.Arcade.Sprite, assassins:Phaser.Physics.Arcade.Sprite)=>{
+            this.physics.world.addCollider(this.anna, this.assassins, (anna:CharacterSprite, assassins:Phaser.Physics.Arcade.Sprite)=>{    
+                anna.hp--;
+                if(anna.hp<=0){
+                    anna.destroy();
+                }
+                assassins.destroy();
+                });
         
         // so collider is a bit strange detector - if the objects overlap in the moment of creation! - it will not be reported as collision!!!!!
         this.physics.world.addCollider(this.fireAttacks, this.assassins, (fireAttacks:Phaser.Physics.Arcade.Sprite, assassins:Phaser.Physics.Arcade.Sprite)=>{
